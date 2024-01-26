@@ -2,6 +2,7 @@
 
 public class Lady : Women
 {
+    public const int Price = 3000;
     public Lady(string name) : base(name)
     {
     }

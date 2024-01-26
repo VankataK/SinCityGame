@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 namespace SinCityGame.Models;
 
-public class Racketeen:Men
+public class Racketeer:Men
 {
-    public Racketeen(string name) : base(name)
+    public const int Price = 2000;
+    public Racketeer(string name) : base(name)
     {
     }
     public override void ShowInfo()

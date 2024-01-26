@@ -8,21 +8,23 @@ namespace SinCityGame.Core
 {
     public class ColorChanger
     {
-        public void ChangeToRed()
+        public static void ChangeColor(string color)
         {
-            Console.ForegroundColor = ConsoleColor.Red;
-        }
-        public void ChangeToBlue()
-        {
-            Console.ForegroundColor = ConsoleColor.Blue;
-        }
-        public void ChangeToGreen()
-        {
-            Console.ForegroundColor = ConsoleColor.Green;
-        }
-        public void ChangeToWhite()
-        {
-            Console.ForegroundColor = ConsoleColor.White;
+            switch (color)
+            {
+                case "red":
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    break;
+                case "blue":
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    break;
+                case "green":
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    break;
+                case "white":
+                    Console.ForegroundColor = ConsoleColor.White;
+                    break;
+            }
         }
     }
 }

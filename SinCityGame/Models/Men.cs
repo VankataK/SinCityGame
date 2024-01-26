@@ -25,6 +25,30 @@ public abstract class Men : Member
     public int Loyalty
     {
         get { return loyalty; }
-        set { loyalty = value; }
+        set {
+            
+            if (value < 0) loyalty = 0;
+            else loyalty = value;
+        
+        }
+    }
+    public static string GenerateRandomMaleName()
+    {
+        Random random = new Random();
+        string[] names = 
+            {
+            "Liam", "Noah", "Ethan", "Oliver", "Mason",
+            "Logan", "Lucas", "Jackson", "Aiden", "Caleb",
+            "Jack", "Ryan", "Connor", "Elijah", "Daniel",
+            "Isaac", "Matthew", "William", "James", "Benjamin",
+            "Henry", "Joseph", "Samuel", "David", "Carter",
+            "Wyatt", "John", "Owen", "Dylan", "Luke",
+            "Gabriel", "Anthony", "Michael", "Andrew", "Nicholas",
+            "Nathan", "Christopher", "Evan", "Isaiah", "Thomas",
+            "Joshua", "Aiden", "Alex", "Brandon", "Tyler",
+            "Joseph", "Aaron", "Adam", "Kyle", "Miles"
+        };
+
+        return names[random.Next(0, names.Length)];
     }
 }

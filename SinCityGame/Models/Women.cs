@@ -26,6 +26,34 @@ public abstract class Women : Member
     public int Loyalty
     {
         get { return loyalty; }
-        set { loyalty = value; }
+        set
+        {
+
+            if (value < 0) loyalty = 0;
+            else loyalty = value;
+
+        }
+    }
+
+    public static string GenerateRandomFemaleName()
+    {
+        Random random = new Random();
+        string[] femaleNames = new string[]
+       {
+            "Emma", "Olivia", "Ava", "Isabella", "Sophia",
+            "Mia", "Amelia", "Harper", "Evelyn", "Abigail",
+            "Emily", "Ella", "Scarlett", "Grace", "Chloe",
+            "Aria", "Lily", "Isabelle", "Aurora", "Zoe",
+            "Sofia", "Mila", "Luna", "Camila", "Avery",
+            "Layla", "Hannah", "Lillian", "Addison", "Eleanor",
+            "Natalie", "Lily", "Penelope", "Aubrey", "Stella",
+            "Savannah", "Leah", "Hazel", "Violet", "Aaliyah",
+            "Alice", "Josephine", "Madison", "Nora", "Lily",
+            "Eva", "Ruby", "Emilia", "Elizabeth", "Scarlet"
+       };
+
+        return femaleNames[random.Next(0, femaleNames.Length)];
     }
 }
+
+

@@ -6,6 +6,7 @@ public class Guard:Person
     private double blueSympathy;
     private double redSympathy;
     public Dictionary<Lady, int> ladiesSimpaty = new Dictionary<Lady, int>();
+    public bool IsAlive = true;
 
     public Guard(string name):base(name)
     {
@@ -43,7 +44,7 @@ public class Guard:Person
             return redSympathy;
         }
     }
-    public double NaturalSympathy { get => 100 - (blueSympathy + redSympathy);}
+    public double NaturalSympathy { get => 100 - (BlueSympathy + RedSympathy);}
     public void RecoverHealth()
     {
         if (health<=90)
@@ -58,6 +59,7 @@ public class Guard:Person
 
     public override void ShowInfo()
     {
-        Console.WriteLine($"Name: {this.Name}, Health: {this.Health}%, BS: {this.BlueSympathy}%, RS: {this.RedSympathy}%, NS: {this.NaturalSympathy}%");
+        string isAvailably = IsAlive ? "Наличен" : "Неналичен";
+        Console.WriteLine($"Name: {this.Name}\nHealth: {this.Health}%\nBS: {this.BlueSympathy}%\nRS: {this.RedSympathy}%\nNS: {this.NaturalSympathy}% \n {isAvailably}");
     }
 }
