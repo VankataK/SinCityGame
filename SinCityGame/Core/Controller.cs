@@ -117,10 +117,68 @@ public class Controller
             {
                 men.Loyalty += loyaltyIncrease;
             }
+            else if (member is Lady lady)
+            {
+                lady.Loyalty += loyaltyIncrease;
+            }
         }
 
+        curBand.Capital -= bonus;
+
         Console.WriteLine("Бонусът беше успешно раздаден.");
-
-
     }
+
+    //public static void TryRecruitMember(int money, int clever, int loyalty)
+    //{
+    //    Band curBand = Program.bands[Program.currentIndex];
+    //    ColorChanger.ChangeColor(curBand.BandColor);
+
+    //    double chance = ((money / 250.0) * (clever / loyalty)) - random.Next(10, 41);
+
+
+    //    int randomNumber = random.Next(0, 101);
+
+
+    //    if (randomNumber <= chance)
+    //    {
+    //        Console.WriteLine("Членът се съгласи да се присъедини към вашата банда!");
+
+    //    }
+    //    else
+    //    {
+    //        Console.WriteLine("Членът не се съгласи да се присъедини към вашата банда.");
+    //    }
+    //}
+
+    public static void ClubParty()
+    {
+        int partyCost = 12500;
+
+        Band curBand = Program.bands[Program.currentIndex];
+        ColorChanger.ChangeColor(curBand.BandColor);
+
+        int minMen = curBand.Members.Count(member => member is Men) - 1;
+        int minWomen = curBand.Members.Count(member => member is Lady);
+
+       
+        int loyaltyIncrease = 5 * Math.Min(minMen, minWomen);
+
+       
+        foreach (var member in curBand.Members)
+        {
+
+            if (member is Men men)
+            {
+                men.Loyalty += loyaltyIncrease;
+            }
+            else if (member is Lady lady)
+            {
+                lady.Loyalty += loyaltyIncrease;
+            }
+        }
+
+        curBand.Capital -= partyCost;
+        Console.WriteLine("Успешно парти!");
+    }
+
 }
