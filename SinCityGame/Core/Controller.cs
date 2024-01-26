@@ -96,4 +96,31 @@ public class Controller
         guard.Health -= (killer.Skills + killer.Clever) / 5 + random.Next(0, 20);
         if (guard.Health < 1) guard.IsAlive = false;
     }
+
+    public static void GiveBonuses()
+    {
+        Band curBand = Program.bands[Program.currentIndex];
+        ColorChanger.ChangeColor(curBand.BandColor);
+        Console.WriteLine("Сума за бонуса: ");
+        int bonus = int.Parse(Console.ReadLine());
+        if (bonus * curBand.Members.Count > curBand.Capital)
+        {
+            Console.WriteLine("Няма достатъчно средтва");
+            return;
+        }
+        int loyaltyIncrease = (7 * bonus) / 1000;
+
+
+        foreach (var member in curBand.Members)
+        {
+            if (member is Men men)
+            {
+                men.Loyalty += loyaltyIncrease;
+            }
+        }
+
+        Console.WriteLine("Бонусът беше успешно раздаден.");
+
+
+    }
 }
