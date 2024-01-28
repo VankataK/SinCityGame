@@ -15,6 +15,6 @@ public class Killer:Men
     }
     public override void ShowInfo()
     {
-        Console.WriteLine($"Убиец - Име: {this.Name}, {this.Skills}, {this.Clever}, {this.Loyalty}");
+        Console.WriteLine($"{this.Name}, {this.Skills}, {this.Clever}, {this.Loyalty}");
     }
 }

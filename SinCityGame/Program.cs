@@ -9,7 +9,7 @@ public class Program
     static void Main()
     {
         //Controller controller = new Controller();
-        ColorChanger.ChangeColor("red");
+        /*ColorChanger.ChangeColor("red");
         Console.Write("Въведете име на шефа на банда 1: ");
         Boss redBoss = new Boss(Console.ReadLine());
         Console.Write("Въведете име на банда 1: ");
@@ -30,7 +30,6 @@ public class Program
         }
         Controller.AddNewMember();
         Controller.AddNewMember();
-        Controller.TryKillingBanker();
-
+        Controller.TryKillingBanker();*/
     }
 }

@@ -8,6 +8,6 @@ public class Lady : Women
     }
     public override void ShowInfo()
     {
-        Console.WriteLine($"Дама - Име: {this.Name}, {this.Sexappeal}, {this.Crafty}, {this.Loyalty}");
+        Console.WriteLine($"{this.Name}, {this.Sexappeal}, {this.Crafty}, {this.Loyalty}");
     }
 }

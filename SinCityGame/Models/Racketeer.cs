@@ -10,6 +10,6 @@ public class Racketeer:Men
     }
     public override void ShowInfo()
     {
-        Console.WriteLine($"Рекетьор - Име: {this.Name}, {this.Skills}, {this.Clever}, {this.Loyalty}");
+        Console.WriteLine($"{this.Name}, {this.Skills}, {this.Clever}, {this.Loyalty}");
     }
 }

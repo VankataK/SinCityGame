@@ -60,6 +60,24 @@ public class Guard:Person
     public override void ShowInfo()
     {
         string isAvailably = IsAlive ? "Наличен" : "Неналичен";
-        Console.WriteLine($"Name: {this.Name}\nHealth: {this.Health}%\nBS: {this.BlueSympathy}%\nRS: {this.RedSympathy}%\nNS: {this.NaturalSympathy}% \n {isAvailably}");
+        Console.WriteLine($"Name: {this.Name}\nHealth: {this.Health}%");
+        Console.WriteLine($"BS: {this.BlueSympathy}%");
+        foreach (Lady lady in Program.bands[0].Members.Where(m => m is Lady))
+        {
+            if (ladiesSimpaty.ContainsKey(lady))
+            {
+                Console.Write($"{lady.Name}: {ladiesSimpaty[lady]}, ");
+            }
+        }
+        Console.WriteLine($"RS: {this.RedSympathy}%");
+        foreach (Lady lady in Program.bands[1].Members.Where(m => m is Lady))
+        {
+            if (ladiesSimpaty.ContainsKey(lady))
+            {
+                Console.Write($"{lady.Name}: {ladiesSimpaty[lady]}, ");
+            }
+        }
+        Console.WriteLine($"NS: {this.NaturalSympathy}%");
+        Console.WriteLine(isAvailably);
     }
 }

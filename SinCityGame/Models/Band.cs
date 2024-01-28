@@ -20,25 +20,26 @@ public class Band
     public string BandColor { get; set; }
     public List<Member> Members => members;
     public int Capital { get; set; }
-    public void AddMemeber(Member m)
+    public void AddMember(Member m)
     {
         members.Add(m);
     }
-    public Member GetMember(string name)
+    public bool RemoveMember(Member member)
     {
-        if (members.Any(m=>m.Name==name))
+        members.Remove(member);
+        if (!members.Contains(member))
         {
-            return members.FirstOrDefault(m => m.Name == name);
+            return true;
         }
-        return null;
+        return false;
     }
-    public void ShowInfo()
+    public bool CheckBandMoney(int money)
     {
-        Console.WriteLine($"Име на бандата: {this.Name}, Шеф: {this.Boss.Name}, Капитал: {this.Capital}$");
-        Console.WriteLine("Членове:");
-        foreach (Member m in members)
+        if (this.Capital >= money)
         {
-            m.ShowInfo();
+            return true;
         }
+        Console.WriteLine("Нямате достатъчно пари!");
+        return false;
     }
 }
