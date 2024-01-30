@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-namespace SinCityGame.Models;
+﻿namespace SinCityGame.Models;
 
 public class Racketeer:Men
 {

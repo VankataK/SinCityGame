@@ -5,8 +5,9 @@ public class Guard:Person
     private double health;
     private double blueSympathy;
     private double redSympathy;
+    private double naturalSympathy;
     public Dictionary<Lady, int> ladiesSimpaty = new Dictionary<Lady, int>();
-    public bool IsAlive = true;
+    public string GuardBand = "none";
 
     public Guard(string name):base(name)
     {
@@ -18,33 +19,76 @@ public class Guard:Person
     { 
         get 
         {
-            if (ladiesSimpaty.Count == 0)
+            blueSympathy = 0;
+            switch (GuardBand)
             {
-                return 0;
-            }
-            foreach (Lady lady in Program.bands[0].Members.Where(m => m is Lady))
-            {
-                blueSympathy += ladiesSimpaty[lady];
+                case "none":
+                    if (ladiesSimpaty.Count == 0)
+                    {
+                        return 0;
+                    }
+                    foreach (Lady lady in Program.bands[0].Members.Where(m => m is Lady))
+                    {
+                        if(ladiesSimpaty.ContainsKey(lady)) blueSympathy += ladiesSimpaty[lady];
+                    }
+                    break;
+                case "blue":
+                    blueSympathy = 100;
+                    ladiesSimpaty.Clear();
+                    break;
+                case "red":
+                    blueSympathy = 0;
+                    ladiesSimpaty.Clear();
+                    break;
             }
             return blueSympathy;
-        } 
+        }
     }
     public double RedSympathy 
     {
         get
         {
-            if (ladiesSimpaty.Count == 0)
+            redSympathy = 0;
+            switch (GuardBand)
             {
-                return 0;
-            }
-            foreach (Lady lady in Program.bands[1].Members.Where(m => m is Lady))
-            {
-                redSympathy += ladiesSimpaty[lady];
+                case "none":
+                    if (ladiesSimpaty.Count == 0)
+                    {
+                        return 0;
+                    }
+                    foreach (Lady lady in Program.bands[1].Members.Where(m => m is Lady))
+                    {
+                        if (ladiesSimpaty.ContainsKey(lady)) redSympathy += ladiesSimpaty[lady];
+                    }
+                    break;
+                case "red":
+                    redSympathy = 100;
+                    ladiesSimpaty.Clear();
+                    break;
+                case "blue":
+                    redSympathy = 0;
+                    ladiesSimpaty.Clear();
+                    break;
             }
             return redSympathy;
         }
     }
-    public double NaturalSympathy { get => 100 - (BlueSympathy + RedSympathy);}
+    public double NaturalSympathy 
+    {
+        get 
+        {
+            switch (GuardBand)
+            {
+                case "none":
+                    naturalSympathy = 100 - (BlueSympathy+RedSympathy); 
+                    break;
+                default:
+                    naturalSympathy = 0;
+                    break;
+            }
+            return naturalSympathy;
+        }
+    }
     public void RecoverHealth()
     {
         if (health<=90)
@@ -56,28 +100,38 @@ public class Guard:Person
             health = 100;
         }
     }
-
+    public void CheckGuardSympaty()
+    {
+        if (BlueSympathy>49)
+        {
+            GuardBand = "blue";
+        }
+        else if (RedSympathy > 49)
+        {
+            GuardBand = "red";   
+        }
+    }
     public override void ShowInfo()
     {
-        string isAvailably = IsAlive ? "Наличен" : "Неналичен";
         Console.WriteLine($"Name: {this.Name}\nHealth: {this.Health}%");
         Console.WriteLine($"BS: {this.BlueSympathy}%");
         foreach (Lady lady in Program.bands[0].Members.Where(m => m is Lady))
         {
             if (ladiesSimpaty.ContainsKey(lady))
             {
-                Console.Write($"{lady.Name}: {ladiesSimpaty[lady]}, ");
+                Console.Write($"{lady.Name}: {ladiesSimpaty[lady]} | ");
             }
         }
+        Console.WriteLine();
         Console.WriteLine($"RS: {this.RedSympathy}%");
         foreach (Lady lady in Program.bands[1].Members.Where(m => m is Lady))
         {
             if (ladiesSimpaty.ContainsKey(lady))
             {
-                Console.Write($"{lady.Name}: {ladiesSimpaty[lady]}, ");
+                Console.Write($"{lady.Name}: {ladiesSimpaty[lady]} | ");
             }
         }
+        Console.WriteLine();
         Console.WriteLine($"NS: {this.NaturalSympathy}%");
-        Console.WriteLine(isAvailably);
     }
 }

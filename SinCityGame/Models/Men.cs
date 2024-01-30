@@ -28,6 +28,7 @@ public abstract class Men : Member
         set {
             
             if (value < 0) loyalty = 0;
+            if(value>100) loyalty = 100;
             else loyalty = value;
         
         }

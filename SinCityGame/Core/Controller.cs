@@ -4,6 +4,7 @@ namespace SinCityGame.Core;
 public class Controller
 {
     private static Random random = new Random();
+
     public static void AddNewMember()
     {
         Band curBand = Program.bands[Program.currentIndex];
@@ -19,7 +20,7 @@ public class Controller
                 for (int i = 1; i <= 10; i++)
                 {
                     ladies.Add(new Lady(Women.GenerateRandomFemaleName()));
-                    Console.WriteLine(i+") ");
+                    Console.Write(i+") ");
                     ladies[i-1].ShowInfo();
                 }
                 Console.Write("Изберете номера на дамата, която искате да наемете:");
@@ -33,7 +34,7 @@ public class Controller
                 for (int i = 1; i <= 10; i++)
                 {
                     killer.Add(new Killer(Men.GenerateRandomMaleName()));
-                    Console.WriteLine(i + ") ");
+                    Console.Write(i + ") ");
                     killer[i-1].ShowInfo();
                 }
                 Console.Write("Изберете номера на убиеца, който искате да наемете:");
@@ -47,7 +48,7 @@ public class Controller
                 for (int i = 1; i <= 10; i++)
                 {
                     racketeers.Add(new Racketeer(Men.GenerateRandomMaleName()));
-                    Console.WriteLine(i + ") ");
+                    Console.Write(i + ") ");
                     racketeers[i-1].ShowInfo();
                 }
                 Console.Write("Изберете номера на рекетьора, който искате да наемете:");
@@ -61,6 +62,7 @@ public class Controller
         }
         Console.WriteLine("--------------------");
     }
+
     public static void BribeGuard()
     {
         Band curBand = Program.bands[Program.currentIndex];
@@ -78,9 +80,16 @@ public class Controller
         Console.Write("Въведете номера на дамата, която искате да занесе подкупа: ");
         int chocedLady = int.Parse(Console.ReadLine());
         Lady lady = (Lady)ladies[chocedLady - 1];
-        Controller.ShowBankInfo();
+        Program.bank.ShowBankInfo();
+        ColorChanger.ChangeColor(curBand.BandColor);
         Console.Write("Въведете номерът на пазача, който искате да подкупите: ");
-        Guard guard = Program.bank.Guards[int.Parse(Console.ReadLine()) - 1];
+        int guardNum = int.Parse(Console.ReadLine())-1;
+        Guard guard = Program.bank.Guards[guardNum];
+        if (guard.GuardBand != "none")
+        {
+            Console.WriteLine($"{guard.Name} не може да се подкупи!");
+            return;
+        }
         lady.Loyalty -= 7;
         int addedSympathy = (bribe / 1000) * ((lady.Sexappeal + lady.Crafty) / 50);
         if (guard.ladiesSimpaty.ContainsKey(lady))
@@ -89,6 +98,7 @@ public class Controller
         }
         else guard.ladiesSimpaty.Add(lady, addedSympathy);
         guard.RecoverHealth();
+        guard.CheckGuardSympaty();
         int chanceToBeCaugth = (80 - lady.Crafty) / 5;
         if (random.Next(100) <= chanceToBeCaugth)
         {
@@ -98,11 +108,7 @@ public class Controller
         else Console.WriteLine($"{lady.Name} се измъкна успешно.");
         Console.WriteLine("--------------------");
     }
-    public static void ShowBankInfo()
-    {
-        ColorChanger.ChangeColor("green");
-        Program.bank.ShowInfo();
-    }
+
     public static void ShowBandInfo()
     {
         Band curBand = Program.bands[Program.currentIndex];
@@ -127,7 +133,7 @@ public class Controller
         Console.WriteLine("--------------------");
     }
 
-    public static void TryKillingBanker()
+    public static void TryToKillGuard()
     {
         Band curBand = Program.bands[Program.currentIndex];
         ColorChanger.ChangeColor(curBand.BandColor);
@@ -142,15 +148,21 @@ public class Controller
         Console.Write("Въведете номера на убиеца, който искате да използвате: ");
         int chocedKiller = int.Parse(Console.ReadLine());
         Killer killer = (Killer)killers[chocedKiller-1];
-        Controller.ShowBankInfo();
+        Program.bank.ShowBankInfo();
+        ColorChanger.ChangeColor(curBand.BandColor);
         Console.Write("Въведете номерът на пазача, който искате да убиете: ");
-        Guard guard = Program.bank.Guards[int.Parse(Console.ReadLine()) - 1];
-        killer.Loyalty -= 12;
+        int guardNum = int.Parse(Console.ReadLine()) - 1;
+        Guard guard = Program.bank.Guards[guardNum];
         guard.Health -= (killer.Skills + killer.Clever) / 5 + random.Next(0, 20);
         if (guard.Health < 1)
         {
-            guard.IsAlive = false;
             Console.WriteLine($"{guard.Name} беше убит.");
+            Program.bank.Guards.Remove(guard);
+            if (Program.bank.Guards.Count == 0)
+            {
+                Program.winner = curBand.Name;
+                return;
+            }
         }
         int chanceToBeCaugth = (80 - killer.Clever) / 2;
         if (random.Next(100)<=chanceToBeCaugth)
@@ -277,21 +289,21 @@ public class Controller
         ColorChanger.ChangeColor(curBand.BandColor);
         Console.WriteLine("--------------------");
         if (!curBand.CheckBandMoney(partyCost)) return;
-        int minMen = curBand.Members.Count(member => member is Men) - 1;
-        int minWomen = curBand.Members.Count(member => member is Women);
-        int loyaltyIncrease = 5 * Math.Min(minMen, minWomen);
-       
-        foreach (var member in curBand.Members)
+        List<Member> men = curBand.Members.Where(m => m is Men).ToList();
+        List<Member> women = curBand.Members.Where(m=> m is Women).ToList();
+        if (men.Count==0 || women.Count==0)
         {
-
-            if (member is Men men)
-            {
-                men.Loyalty += loyaltyIncrease;
-            }
-            else if (member is Women women)
-            {
-                women.Loyalty += loyaltyIncrease;
-            }
+            Console.WriteLine("Нямате достатъчно членове за парти.");
+            return;
+        }
+        int loyaltyIncrease = 5 * Math.Min(men.Count, women.Count);
+        foreach (Men man in curBand.Members.Where(m => m is Men))
+        {
+            man.Loyalty += loyaltyIncrease;
+        }
+        foreach (Women woman in curBand.Members.Where(m => m is Women))
+        {
+            woman.Loyalty += loyaltyIncrease;
         }
         curBand.Capital -= partyCost;
         Console.WriteLine("Успешно парти!");
@@ -302,13 +314,44 @@ public class Controller
     {
         Band curBand = Program.bands[Program.currentIndex];
         ColorChanger.ChangeColor(curBand.BandColor);
-        Console.WriteLine("--------------------");
         foreach (Racketeer racketeer in curBand.Members.Where(m=>m is Racketeer))
         {
             int earnedMoney = (racketeer.Skills + racketeer.Clever) * 5 + random.Next(300);
             Console.WriteLine($"{racketeer.Name} събра {earnedMoney}$");
             curBand.Capital += earnedMoney;
         }
-        Console.WriteLine("--------------------");
+    }
+
+    public static void CheckForWin()
+    {
+        Band curBand = Program.bands[Program.currentIndex];
+        int winnedGuards = 0;
+        if (Program.currentIndex==0)
+        {
+            foreach (Guard guard in Program.bank.Guards.Where(g => g.GuardBand == "red"))
+            {
+                winnedGuards++;
+            }
+        }
+        else if (Program.currentIndex==1)
+        {
+            foreach (Guard guard in Program.bank.Guards.Where(g => g.GuardBand == "blue"))
+            {
+                winnedGuards++;
+            }
+        }
+        if (Program.bank.Guards.Count==1)
+        {
+            if (winnedGuards==1)
+            {
+                Program.winner = curBand.Name;
+                return;
+            }
+        }
+        if ((winnedGuards/Program.bank.Guards.Count)*100>=66)
+        {
+            Program.winner = curBand.Name;
+            return;
+        }
     }
 }

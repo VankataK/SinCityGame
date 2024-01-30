@@ -1,5 +1,4 @@
-﻿using System;
-namespace SinCityGame.Models;
+﻿namespace SinCityGame.Models;
 
 public abstract class Women : Member
 {
@@ -30,6 +29,7 @@ public abstract class Women : Member
         {
 
             if (value < 0) loyalty = 0;
+            if(value>100) loyalty = 100;
             else loyalty = value;
 
         }

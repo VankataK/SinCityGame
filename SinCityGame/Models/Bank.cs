@@ -1,4 +1,6 @@
-﻿namespace SinCityGame.Models;
+﻿using SinCityGame.Core;
+
+namespace SinCityGame.Models;
 
 public class Bank
 {
@@ -15,10 +17,11 @@ public class Bank
         set { name = value; }
     }
     public List<Guard> Guards => guards;
-    public void ShowInfo()
+    public void ShowBankInfo()
     {
+        ColorChanger.ChangeColor("green");
         Console.WriteLine($"-----{this.Name}-----");
-        foreach (Guard guard in guards)
+        foreach (Guard guard in this.guards)
         {
             guard.ShowInfo();
             Console.WriteLine("-------------------");
